@@ -19,15 +19,42 @@ Una vez se genera la API Key, se procede a ir a la documentación de los Scripts
 
 ## Ejecución del Script
 
-Sistema operativo Linux:
+* Sistema operativo **Linux**:
+
+Se instala las siguientes librerias PIP y se procede a ejecutar
+
 ```
+pip install python-csv
+pip install requests
+pip install os-sys
 Python3 ScriptBlackList.py IPs.txt
 ```
 
-Sistema operativo Windows:
+* Sistema operativo **Windows**:
 
 Ir a la URL [get-pip.py](https://bootstrap.pypa.io/get-pip.py) ejecutar el archivo, para poder instalar pip en Windows.
 
+```
+python c:\users\get-pip.py
+```
+
+Una vez instalado el PIP este genera los Scripts, la cual se aloja donde esta instalado el Python, para verificar la ruta usar el siguiente comando:
+```
+where python
+```
+
+Ir a la ruta donde se encuentra el ejecutable de **Python**
+```
+cd c:\users\user\appdata\local\programs\python\Python310\scripts
+```
+
+Una vez en la carpeta ejecutar el siguiente comando para instalar el modulo de PIP request
+```
+pip install python-csv
+pip install requests
+pip install os-sys
+```
+Se procede a ejecutar el Script
 ```
 python c:\users\ScriptBlackList.py ips.txt
 ```
