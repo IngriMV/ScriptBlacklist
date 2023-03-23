@@ -55,7 +55,7 @@ for ip in txt_ips:
 # Si se encontraron coincidencias, generar un archivo CSV con las direcciones IP coincidentes
 if matched_ips:
     try:
-        with open('matched_ips.csv', 'w', newline='') as csvfile:
+        with open('IPs_maliciosas.csv', 'w', newline='') as csvfile:
             writer = csv.writer(csvfile)
             writer.writerow(['Direccion IP'])
             for ip in matched_ips:
