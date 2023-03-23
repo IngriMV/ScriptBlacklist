@@ -1,67 +1,47 @@
-import sys
 import requests
-import csv
+import threading
+import sys
 
-# Leer el nombre de archivo txt desde la línea de comandos
-try:
-    file_name = sys.argv[1]
-except IndexError:
-    print("Debe proporcionar el nombre del archivo .txt como argumento.")
-    sys.exit(1)
+API_KEY = 'TU_PROPIA_API_KEY'
 
-# Leer las direcciones IP desde el archivo txt
-try:
-    with open(file_name, 'r') as f:
-        txt_ips = set()
-        for line in f:
-            line = line.strip()
-            if line:
-                txt_ips.add(line)
-except FileNotFoundError:
-    print(f"El archivo {file_name} no se encuentra.")
-    sys.exit(1)
-except Exception as e:
-    print(f"Ocurrió un error inesperado al leer el archivo txt: {e}")
-    sys.exit(1)
-
-# Definir la URL de la API y los encabezados
-url = 'https://api.abuseipdb.com/api/v2/check'
-headers = {
-    'Accept': 'application/json',
-    'Key': 'API Key'
-}
-
-# Definir una lista para almacenar las direcciones IP que coinciden
-matched_ips = []
-
-# Hacer una solicitud GET a la API para cada dirección IP de texto y verificar si está en la lista negra
-for ip in txt_ips:
-    querystring = {
-        'ipAddress': ip,
-        'maxAgeInDays': '90',
-        'limit':'500000'
-    }
+def get_ip_score(ip):
+    url = f'https://api.abuseipdb.com/api/v2/check?ipAddress={ip}&maxAgeInDays=90'
+    headers = {'Key': API_KEY, 'Accept': 'application/json'}
     try:
-        response = requests.get(url=url, headers=headers, params=querystring)
+        response = requests.get(url, headers=headers)
         response.raise_for_status()
         data = response.json()
-        if data['data']['isWhitelisted'] == False and data['data']['abuseConfidenceScore'] >= 90:
-            matched_ips.append(ip)
-    except requests.exceptions.HTTPError as e:
-        print(f"Error al hacer la solicitud a la API: {e}")
-    except (KeyError, ValueError) as e:
-        print(f"Error al procesar la respuesta de la API: {e}")
+        score = data['data']['abuseConfidenceScore']
+        return score
+    except requests.exceptions.RequestException as e:
+        print(f'Error al obtener la puntuación de {ip}: {e}')
+        return None
 
-# Si se encontraron coincidencias, generar un archivo CSV con las direcciones IP coincidentes
-if matched_ips:
-    try:
-        with open('IPs_maliciosas.csv', 'w', newline='') as csvfile:
-            writer = csv.writer(csvfile)
-            writer.writerow(['Direccion IP'])
-            for ip in matched_ips:
-                writer.writerow([ip])
-        print(f"Se encontraron {len(matched_ips)} direcciones IP coincidentes. Se ha generado el archivo 'matched_ips.csv'.")
-    except Exception as e:
-        print(f"Error al escribir el archivo CSV: {e}")
-else:
-    print("No se encontraron direcciones IP coincidentes.")
+def worker(ip, scores):
+    score = get_ip_score(ip)
+    if score is not None and score > 50:
+        scores[ip] = score
+
+def main(filename):
+    with open(filename, 'r') as f:
+        ips = f.read().splitlines()
+    scores = {}
+    threads = []
+    for ip in ips:
+        t = threading.Thread(target=worker, args=(ip, scores))
+        t.start()
+        threads.append(t)
+    for t in threads:
+        t.join()
+    with open('IPs_maliciosas.csv', 'w') as f:
+        f.write('IP Address\n')
+        for ip, score in scores.items():
+            f.write(f'{ip}\n')
+    print(f'Coincidencias guardadas en el archivo IPs_maliciosas.csv')
+
+if __name__ == '__main__':
+    if len(sys.argv) < 2:
+        print('Uso: python abuseipdb.py FILENAME')
+        sys.exit(1)
+    filename = sys.argv[1]
+    main(filename)
