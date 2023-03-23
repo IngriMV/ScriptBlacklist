@@ -70,7 +70,7 @@ python c:\users\ScriptBlackList.py ips.txt
 
 ## REFERENCIAS
 
-[AbuseIP Blacklist](https://docs.abuseipdb.com/#plaintext-blacklist)
-[PIP Windows](https://bootstrap.pypa.io/get-pip.py)
+* [AbuseIP Blacklist](https://docs.abuseipdb.com/#plaintext-blacklist)
+* [PIP Windows](https://bootstrap.pypa.io/get-pip.py)
 
 
