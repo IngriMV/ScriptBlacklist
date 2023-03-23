@@ -18,10 +18,10 @@ Una vez verificada la cuenta se debe [crear la API](https://www.abuseipdb.com/ac
 Una vez se genera la API Key, se procede a ir a la documentación de los Scripts de la herramienta AbuseIP dando [clic Aquí](https://docs.abuseipdb.com/#plaintext-blacklist) ; se selecciona la Opción **REPORTS ENDPOINT** y dar clic en la opción **Python**, este funciona para traer la información de la ultima semana.
 
 
-Para utilizar el [ScriptBlackList.py](https://github.com/IngriMV/ScriptBlacklist/blob/main/ScriptBlackList.py) que se encuentra en este repositorio, se debe reemplazar el campo **API Key** por la API generada, un ejemplo a continuación:
+Para utilizar el [ScriptBlackList.py](https://github.com/IngriMV/ScriptBlacklist/blob/main/ScriptBlackList.py) que se encuentra en este repositorio, se debe reemplazar el campo **'TU_PROPIA_API_KEY'** por la API generada, un ejemplo a continuación:
 
 ```
-'Key': '00000000000000'
+API_KEY ='00000000000000' 
 ```
 
 ## Ejecución del Script
