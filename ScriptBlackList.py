@@ -1,8 +1,11 @@
 import requests
 import threading
 import sys
+import json
+import csv
 
-API_KEY = 'TU_PROPIA_API_KEY'
+
+API_KEY = 'YOUR_API'
 
 def get_ip_score(ip):
     url = f'https://api.abuseipdb.com/api/v2/check?ipAddress={ip}&maxAgeInDays=90'
@@ -17,10 +20,12 @@ def get_ip_score(ip):
         print(f'Error al obtener la puntuación de {ip}: {e}')
         return None
 
+
 def worker(ip, scores):
     score = get_ip_score(ip)
     if score is not None and score > 50:
         scores[ip] = score
+
 
 def main(filename):
     with open(filename, 'r') as f:
@@ -33,15 +38,16 @@ def main(filename):
         threads.append(t)
     for t in threads:
         t.join()
-    with open('IPs_maliciosas.csv', 'w') as f:
+    with open('IPS_maliciosas.csv', 'w') as f:
         f.write('IP Address\n')
         for ip, score in scores.items():
             f.write(f'{ip}\n')
-    print(f'Coincidencias guardadas en el archivo IPs_maliciosas.csv')
+
+    print(f'Coincidencias guardadas en el archivo IPS_maliciosas.csv')
 
 if __name__ == '__main__':
     if len(sys.argv) < 2:
-        print('Uso: python abuseipdb.py FILENAME')
+        print('Uso: python Script.py FILENAME')
         sys.exit(1)
     filename = sys.argv[1]
     main(filename)
