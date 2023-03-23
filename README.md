@@ -36,6 +36,8 @@ Se instala las siguientes librerias PIP y se procede a ejecutar
 pip install python-csv
 pip install requests
 pip install os-sys
+pip install threaded
+pip install jsons
 Python3 ScriptBlackList.py IPs.txt
 ```
 
@@ -62,6 +64,8 @@ Una vez en la carpeta ejecutar el siguiente comando para instalar el modulo de P
 pip install python-csv
 pip install requests
 pip install os-sys
+pip install threaded
+pip install jsons
 ```
 Se procede a ejecutar el Script
 ```
