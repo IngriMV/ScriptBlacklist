@@ -5,7 +5,7 @@ import json
 import csv
 import pycountry
 
-API_KEY = 'e78fd35fe75c68e59410bb87330246dc30d475a2875dd27650a042e16f1b7b0d8be50e9de977c404'
+API_KEY = 'Api_key'
 
 def get_ip_info(ip):
     url = f'https://api.abuseipdb.com/api/v2/check?ipAddress={ip}&maxAgeInDays=90'
